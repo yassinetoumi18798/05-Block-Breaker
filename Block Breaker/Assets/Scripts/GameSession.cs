@@ -6,10 +6,13 @@ using TMPro;
 public class GameSession : MonoBehaviour {
 
     // config params
-    [Range(0.1f, 10f)] [SerializeField] float gameSpeed = 1f;
+    public static float gameSpeed = 0.6f;
     [SerializeField] int pointsPerBlockDestroyed = 83;
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] bool isAutoPlayEnabled;
+    public static float timeS=1;
+    public static bool GameIsPaused = false;
+    public GameObject PauseMenuUI;
 
     // state variables
     [SerializeField] int currentScore = 0;
@@ -30,13 +33,23 @@ public class GameSession : MonoBehaviour {
 
     private void Start()
     {
+        GameObject.Find("Panel").SetActive(false);
         scoreText.text = currentScore.ToString();    
     }
 
     // Update is called once per frame
     void Update () {
-        Time.timeScale = gameSpeed;
-	}
+        if (timeS == 1)
+        {
+            Time.timeScale = gameSpeed;
+        }
+        else
+        {
+            Time.timeScale = timeS;
+        }
+        
+        
+    }
 
     public void AddToScore()
     {
@@ -52,4 +65,31 @@ public class GameSession : MonoBehaviour {
     {
         return isAutoPlayEnabled;
     }
+
+    public void getTimeScale()
+    {
+        
+        if (GameIsPaused) {
+            timeS = 1f;
+            GameIsPaused = false;
+
+            GameObject.Find("Panel").SetActive(true);
+
+
+        }
+        else
+        {
+            timeS = 0f;
+            GameIsPaused = true;
+
+            GameObject.Find("Panel").SetActive(false);
+
+
+        }
+
+
+
+
+    }
+
 }
